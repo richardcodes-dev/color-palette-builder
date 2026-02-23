@@ -17,6 +17,7 @@ export default {
       transform(prefix, selector) {
         if (selector === ':root' || selector === ':host') return prefix
         // keep everything else the same, but add the prefix to the beginning of the selector
+        if (selector === 'body' || selector === 'html') return selector  // keep global stuff
         return selector.startsWith(prefix) ? selector : `${prefix} ${selector}`
       }
     }

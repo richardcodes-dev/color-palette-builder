@@ -5,7 +5,7 @@ import PaletteTabs from "./components/PaletteTabs"
 export default function PaletteBuilder() {
 
   return (
-    <div className="p-12 space-y-6 bg-white rounded-xl">
+    <div className="p-12 space-y-6 bg-white rounded-xl max-w-250 mx-auto">
       <PaletteTabs />
     </div>
   )
