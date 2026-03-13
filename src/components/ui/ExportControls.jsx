@@ -9,15 +9,15 @@ export default function ExportControls({
   const [prefix, setPrefix] = useState(defaultPrefix || "--color-primary-");
   const [format, setFormat] = useState("hex");
 
-  const handleReset = () => {
-    setPrefix(defaultPrefix || "--color-primary-");
-    setFormat("hex");
-  }
-
   const handleCopy = () => {
     const paletteString = stringifyPalette(palette, prefix, format);
     navigator.clipboard.writeText(paletteString);
   };
+
+  const handleReset = () => {
+    setPrefix(defaultPrefix || "--color-primary-");
+    setFormat("hex");
+  }
 
   return (
     <div className="flex gap-2 items-center mt-4">
