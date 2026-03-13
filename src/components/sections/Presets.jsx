@@ -1,14 +1,7 @@
 import Swatches from '../ui/Swatches';
 import ExportControls from '../ui/ExportControls';
 
-const PresetsSection = ({
-  palettes,
-  prefixes,
-  setPrefixes,
-  formats,
-  setFormats,
-  copyToClipboard
-}) => {
+const PresetsSection = ({ palettes }) => {
   return (
 
     <div>
@@ -19,22 +12,7 @@ const PresetsSection = ({
 
           <ExportControls
             palette={shades}
-            prefix={prefixes[name] || `--color-${name}-`}
-            onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, [name]: val }))}
-            format={formats[name] || "hex"}
-            onFormatChange={(val) => setFormats(prev => ({ ...prev, [name]: val }))}
-
-            // ADD THE FALLBACKS HERE:
-            onCopy={() => copyToClipboard(
-              shades,
-              prefixes[name] || `--color-${name}-`,
-              formats[name] || "hex"
-            )}
-
-            onReset={() => {
-              setPrefixes(prev => ({ ...prev, [name]: `--color-${name}-` }));
-              setFormats(prev => ({ ...prev, [name]: "hex" }));
-            }}
+            defaultPrefix={`--color-${name}-`}
           />
         </div>
       ))}

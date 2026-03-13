@@ -6,11 +6,6 @@ import { formatHex } from "culori";
 const CustomSection = ({
   l, c, h, setL, setC, setH,
   customPalette,
-  prefixes,
-  setPrefixes,
-  formats,
-  setFormats,
-  copyToClipboard,
   handleBrandColorChange,
 }) => {
 
@@ -99,19 +94,7 @@ const CustomSection = ({
 
       <ExportControls
         palette={customPalette}
-        prefix={prefixes["custom"] || "--color-custom-"}
-        onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, custom: val }))}
-        format={formats["custom"] || "hex"}
-        onFormatChange={(val) => setFormats(prev => ({ ...prev, custom: val }))}
-        onCopy={() => copyToClipboard(
-          customPalette,
-          prefixes["custom"] || "--color-custom-",
-          formats["custom"] || "hex"
-        )}
-        onReset={() => {
-          setPrefixes(prev => ({ ...prev, custom: "--color-custom-" }));
-          setFormats(prev => ({ ...prev, custom: "hex" }));
-        }}
+        defaultPrefix="--color-custom-"
       />
     </div>
 

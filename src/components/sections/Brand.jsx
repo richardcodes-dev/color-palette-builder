@@ -8,20 +8,14 @@ const BrandSection = ({
   setLightRate,
   darkRate,
   setDarkRate,
-  prefixes,
-  setPrefixes,
-  formats,
-  setFormats,
-  copyToClipboard,
   setOverrides,
   finalDisplayPalette,
 }) => {
 
-  // Inside your slider onChange:
-  const handleChange = (setter, e) => {
-    setter(parseFloat(e.target.value));
-    if (onReset) onReset(); // This clears the overrides in the parent
-  };
+
+  const resetPalette = () => {
+    setOverrides({});
+  }
 
   return (
 
@@ -38,7 +32,10 @@ const BrandSection = ({
               max="3"
               step="0.1"
               value={lightRate}
-              onChange={(e) => handleChange(setLightRate, e)}
+              onChange={(e) => {
+                setLightRate(parseFloat(e.target.value));
+                resetPalette();
+              }}
               className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
           </div>
@@ -58,7 +55,7 @@ const BrandSection = ({
                 value={brandHex}
                 onChange={(e) => {
                   setBrandHex(e.target.value);
-                  if (onReset) onReset(); // Remember to reset those nudges!
+                  resetPalette(); // Clear overrides when brand color changes
                 }}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer scale-150"
               />
@@ -72,7 +69,10 @@ const BrandSection = ({
             <input
               type="range" min="0.1" max="3" step="0.1"
               value={darkRate}
-              onChange={(e) => handleChange(setDarkRate, e)}
+              onChange={(e) => {
+                setDarkRate(parseFloat(e.target.value));
+                resetPalette();
+              }}
               className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
           </div>
@@ -87,36 +87,7 @@ const BrandSection = ({
         onChange={(key, hex) => setOverrides(prev => ({ ...prev, [key]: hex }))}
       />
 
-      <ExportControls
-        // Matches 'palette' prop
-        palette={finalDisplayPalette}
-
-        // Matches 'prefix' prop
-        prefix={prefixes["brand"] || "--color-primary-"}
-
-        // Matches 'onPrefixChange' prop
-        onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, brand: val }))}
-
-        // Matches 'format' prop
-        format={formats["brand"] || "hex"}
-
-        // Matches 'onFormatChange' prop
-        onFormatChange={(val) => setFormats(prev => ({ ...prev, brand: val }))}
-
-        // Matches 'onCopy' prop
-        onCopy={() => copyToClipboard(
-          finalDisplayPalette,
-          prefixes["brand"] || "--color-primary-",
-          formats["brand"] || "hex"
-        )}
-
-        // Matches 'onReset' prop
-        onReset={() => {
-          setPrefixes(prev => ({ ...prev, brand: "--color-primary-" }));
-          setFormats(prev => ({ ...prev, brand: "hex" }));
-          setOverrides({});
-        }}
-      />
+      <ExportControls palette={finalDisplayPalette} />
     </div>
 
   )

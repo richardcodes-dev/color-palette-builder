@@ -11,8 +11,8 @@ export default function PaletteManager() {
   const [l, setL] = useState(60);
   const [c, setC] = useState(0.1);
   const [h, setH] = useState(200);
-  const [prefixes, setPrefixes] = useState({});
-  const [formats, setFormats] = useState({});
+  // const [prefixes, setPrefixes] = useState({});
+  // const [formats, setFormats] = useState({});
 
   const [brandHex, setBrandHex] = useState("#3b82f6");
   const [lightRate, setLightRate] = useState(1.0);
@@ -203,11 +203,6 @@ export default function PaletteManager() {
           {activeTab === "Presets" && (
             <PresetsSection
               palettes={presetPalettes}
-              prefixes={prefixes}
-              setPrefixes={setPrefixes}
-              formats={formats}
-              setFormats={setFormats}
-              copyToClipboard={copyToClipboard}
             />
           )}
 
@@ -219,11 +214,6 @@ export default function PaletteManager() {
               setLightRate={setLightRate}
               darkRate={darkRate}
               setDarkRate={setDarkRate}
-              prefixes={prefixes}
-              setPrefixes={setPrefixes}
-              formats={formats}
-              setFormats={setFormats}
-              copyToClipboard={copyToClipboard}
               setOverrides={setOverrides}
               finalDisplayPalette={finalDisplayPalette}
             />
@@ -238,11 +228,6 @@ export default function PaletteManager() {
               setC={setC}
               setH={setH}
               customPalette={customPalette}
-              prefixes={prefixes}
-              setPrefixes={setPrefixes}
-              formats={formats}
-              setFormats={setFormats}
-              copyToClipboard={copyToClipboard}
               handleBrandColorChange={handleBrandColorChange}
             />
           )}

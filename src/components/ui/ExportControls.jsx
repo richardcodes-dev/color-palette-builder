@@ -1,26 +1,39 @@
+import { useState } from "react";
+import stringifyPalette from "../../utils/stringifyPalette";
+
 export default function ExportControls({
-  prefix,
-  onPrefixChange,
-  format,
-  onFormatChange,
-  onCopy,
-  onReset
+  palette,
+  defaultPrefix,
 }) {
+
+  const [prefix, setPrefix] = useState(defaultPrefix || "--color-primary-");
+  const [format, setFormat] = useState("hex");
+
+  const handleReset = () => {
+    setPrefix(defaultPrefix || "--color-primary-");
+    setFormat("hex");
+  }
+
+  const handleCopy = () => {
+    const paletteString = stringifyPalette(palette, prefix, format);
+    navigator.clipboard.writeText(paletteString);
+  };
+
   return (
     <div className="flex gap-2 items-center mt-4">
       {/* Prefix input */}
       <input
         className="border px-2 py-1 rounded text-sm bg-white dark:bg-grey-800"
         value={prefix}
-        onChange={(e) => onPrefixChange(e.target.value)}
+        onChange={(e) => setPrefix(e.target.value)}
         placeholder="Prefix (e.g., primary)"
       />
 
-      {/* Format selector */}
+      {/* Color format selector */}
       <select
         className="border px-2 py-1 rounded text-sm bg-white dark:bg-grey-800"
         value={format}
-        onChange={(e) => onFormatChange(e.target.value)}
+        onChange={(e) => setFormat(e.target.value)}
       >
         <option value="hex">HEX</option>
         <option value="rgb">RGB</option>
@@ -31,7 +44,7 @@ export default function ExportControls({
       {/* Copy button */}
       <button
         className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-blue-700 transition-colors"
-        onClick={onCopy}
+        onClick={handleCopy}
       >
         Copy CSS
       </button>
@@ -39,7 +52,7 @@ export default function ExportControls({
       {/* Reset button */}
       <button
         className="text-xs text-body/50 hover:text-body cursor-pointer"
-        onClick={onReset}
+        onClick={handleReset}
       >
         Reset
       </button>
