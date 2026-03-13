@@ -1,23 +1,4 @@
-// export default function PaletteSwatches({ shades }) {
-//   return (
-//     <div className="flex w-full gap-2">
-//       {Object.entries(shades).map(([key, value]) => {
-//         return (
-//           <div key={key} className="flex flex-col justify-center gap-1.5">
-//             <div
-//               className="h-16 gap-2 text-xs rounded-lg aspect-square"
-//               style={{ backgroundColor: value }}
-//             />
-//             <p className="font-mono text-xs font-bold text-center text-body/50 dark:text-grey-400">{key}</p>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// }
-
-
-export default function PaletteSwatches({ shades, onChange }) {
+export default function Swatches({ shades, onChange }) {
   return (
     <div className="flex w-full gap-2">
       {Object.entries(shades).map(([key, value]) => {

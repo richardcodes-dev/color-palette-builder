@@ -1,5 +1,4 @@
-export default function PaletteExportBar({
-  palette,
+export default function ExportControls({
   prefix,
   onPrefixChange,
   format,

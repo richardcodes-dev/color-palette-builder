@@ -1,12 +1,12 @@
 import { useState } from "react";
-import PaletteSwatches from "./PaletteSwatches";
-import CustomControls from "./CustomControls";
-import { palettes } from "../palettes";
-import BrandPaletteGenerator from "./BrandPaletteGenerator";
+import presetPalettes from "../data/preset-palettes";
 import { converter, formatHex, formatHsl, formatRgb, clampRgb, formatCss, oklch, rgb } from "culori";
-import PaletteExportBar from "./PaletteExportBar";
+import PresetsSection from "./sections/Presets";
+import CustomSection from "./sections/Custom";
+import BrandSection from "./sections/Brand";
 
-export default function PaletteTabs() {
+export default function PaletteManager() {
+
   const [activeTab, setActiveTab] = useState("Presets");
   const [l, setL] = useState(60);
   const [c, setC] = useState(0.1);
@@ -182,152 +182,73 @@ export default function PaletteTabs() {
     return palette;
   }
 
-
-
   return (
-    <div>
-      {/* Tabs */}
-      <div className="flex mb-4">
-        {["Presets", "Brand", "Custom"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 border-b-2 ${activeTab === tab ? "border-blue-500" : "border-transparent"}`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
+    <div className="p-12 space-y-6 bg-white rounded-xl max-w-250 mx-auto">
       <div>
-        {activeTab === "Presets" && (
-          <div>
-            {Object.entries(palettes).map(([name, shades]) => (
-              <div key={name} className="mb-6">
-                <h3 className="mb-2 font-semibold">{name}</h3>
-                <PaletteSwatches shades={shades} />
+        {/* Tabs */}
+        <div className="flex mb-4">
+          {["Presets", "Brand", "Custom"].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 border-b-2 ${activeTab === tab ? "border-blue-500" : "border-transparent"}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
 
-                <PaletteExportBar
-                  palette={shades}
-                  prefix={prefixes[name] || `--color-${name}-`}
-                  onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, [name]: val }))}
-                  format={formats[name] || "hex"}
-                  onFormatChange={(val) => setFormats(prev => ({ ...prev, [name]: val }))}
+        {/* Tab Content */}
+        <div>
+          {activeTab === "Presets" && (
+            <PresetsSection
+              palettes={presetPalettes}
+              prefixes={prefixes}
+              setPrefixes={setPrefixes}
+              formats={formats}
+              setFormats={setFormats}
+              copyToClipboard={copyToClipboard}
+            />
+          )}
 
-                  // ADD THE FALLBACKS HERE:
-                  onCopy={() => copyToClipboard(
-                    shades,
-                    prefixes[name] || `--color-${name}-`,
-                    formats[name] || "hex"
-                  )}
+          {activeTab === "Brand" && (
+            <BrandSection
+              brandHex={brandHex}
+              setBrandHex={setBrandHex}
+              lightRate={lightRate}
+              setLightRate={setLightRate}
+              darkRate={darkRate}
+              setDarkRate={setDarkRate}
+              prefixes={prefixes}
+              setPrefixes={setPrefixes}
+              formats={formats}
+              setFormats={setFormats}
+              copyToClipboard={copyToClipboard}
+              setOverrides={setOverrides}
+              finalDisplayPalette={finalDisplayPalette}
+            />
+          )}
 
-                  onReset={() => {
-                    setPrefixes(prev => ({ ...prev, [name]: `--color-${name}-` }));
-                    setFormats(prev => ({ ...prev, [name]: "hex" }));
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "Custom" && (
-          <div>
-
-            <div className="brand-color-picker mb-4">
-              <label className="block text-sm font-medium mb-1">Pick Brand Color (500 Swatch)</label>
-              <input
-                type="color"
-                onChange={handleBrandColorChange}
-                // To keep the input in sync with sliders, convert current LCH back to hex
-                value={formatHex({ mode: "oklch", l, c, h })}
-                className="w-12 h-12 cursor-pointer rounded border-none"
-              />
-            </div>
-
-            <CustomControls
+          {activeTab === "Custom" && (
+            <CustomSection
               l={l}
               c={c}
               h={h}
               setL={setL}
               setC={setC}
               setH={setH}
+              customPalette={customPalette}
+              prefixes={prefixes}
+              setPrefixes={setPrefixes}
+              formats={formats}
+              setFormats={setFormats}
+              copyToClipboard={copyToClipboard}
+              handleBrandColorChange={handleBrandColorChange}
             />
-            <PaletteSwatches shades={customPalette} />
+          )}
 
-
-            <PaletteExportBar
-              palette={customPalette}
-              prefix={prefixes["custom"] || "--color-custom-"}
-              onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, custom: val }))}
-              format={formats["custom"] || "hex"}
-              onFormatChange={(val) => setFormats(prev => ({ ...prev, custom: val }))}
-              onCopy={() => copyToClipboard(
-                customPalette,
-                prefixes["custom"] || "--color-custom-",
-                formats["custom"] || "hex"
-              )}
-              onReset={() => {
-                setPrefixes(prev => ({ ...prev, custom: "--color-custom-" }));
-                setFormats(prev => ({ ...prev, custom: "hex" }));
-              }}
-            />
-          </div>
-        )}
-
-        {activeTab === "Brand" && (
-          <div className="space-y-6">
-            <BrandPaletteGenerator
-              brandHex={brandHex}
-              setBrandHex={setBrandHex}
-              lRate={lightRate}
-              setLRate={setLightRate}
-              dRate={darkRate}
-              setDRate={setDarkRate}
-              onReset={() => setOverrides({})}
-            />
-
-            {/* Use your existing PaletteSwatches component here in the parent */}
-            {/* <PaletteSwatches shades={brandPalette} /> */}
-            <PaletteSwatches
-              shades={finalDisplayPalette}
-              onChange={(key, hex) => setOverrides(prev => ({ ...prev, [key]: hex }))}
-            />
-
-            <PaletteExportBar
-              // Matches 'palette' prop
-              palette={finalDisplayPalette}
-
-              // Matches 'prefix' prop
-              prefix={prefixes["brand"] || "--color-primary-"}
-
-              // Matches 'onPrefixChange' prop
-              onPrefixChange={(val) => setPrefixes(prev => ({ ...prev, brand: val }))}
-
-              // Matches 'format' prop
-              format={formats["brand"] || "hex"}
-
-              // Matches 'onFormatChange' prop
-              onFormatChange={(val) => setFormats(prev => ({ ...prev, brand: val }))}
-
-              // Matches 'onCopy' prop
-              onCopy={() => copyToClipboard(
-                finalDisplayPalette,
-                prefixes["brand"] || "--color-primary-",
-                formats["brand"] || "hex"
-              )}
-
-              // Matches 'onReset' prop
-              onReset={() => {
-                setPrefixes(prev => ({ ...prev, brand: "--color-primary-" }));
-                setFormats(prev => ({ ...prev, brand: "hex" }));
-                setOverrides({});
-              }}
-            />
-          </div>
-        )}
+        </div>
       </div>
     </div>
-  );
+  )
 }
