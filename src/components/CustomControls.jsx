@@ -26,7 +26,7 @@ export default function CustomControls({ l, c, h, setL, setC, setH, swatchCount,
           type="range"
           min="0"
           max="0.4"
-          step="0.01"
+          step="0.001"
           value={c}
           onChange={e => setC(Number(e.target.value))}
           className="w-full"

@@ -10,6 +10,7 @@
   "dependencies": {
     "@r2wc/react-to-web-component": "^2.1.0",
     "@tailwindcss/vite": "^4.0.17",
+    "culori": "^4.0.2",
     "postcss-prefix-selector": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
