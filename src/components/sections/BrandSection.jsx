@@ -1,17 +1,17 @@
-import Swatches from "../ui/Swatches";
-import ExportControls from "../ui/ExportControls";
+import { useState } from "react";
+import { Swatches } from "../ui/Swatches";
+import { ExportControls } from "../ui/ExportControls";
+import { generateBrandColorScale } from "../../utils/palette-utils";
 
-const BrandSection = ({
-  brandHex,
-  setBrandHex,
-  lightRate,
-  setLightRate,
-  darkRate,
-  setDarkRate,
-  setOverrides,
-  finalDisplayPalette,
-}) => {
+export const BrandSection = () => {
 
+  const [brandHex, setBrandHex] = useState("#3b82f6");
+  const [lightRate, setLightRate] = useState(1.0);
+  const [darkRate, setDarkRate] = useState(1.0);
+  const [overrides, setOverrides] = useState({});
+
+  const generatedPalette = generateBrandColorScale(brandHex, lightRate, darkRate);
+  const finalDisplayPalette = { ...generatedPalette, ...overrides };
 
   const resetPalette = () => {
     setOverrides({});
@@ -43,13 +43,13 @@ const BrandSection = ({
           {/* Color Picker */}
           <div className="flex flex-col items-center gap-2">
             <div className="relative w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden">
-              {/* 1. The Visual Circle: This fills the background with your color */}
+              {/* Main visual swatch */}
               <div
                 className="absolute inset-0 w-full h-full"
                 style={{ backgroundColor: brandHex }}
               />
 
-              {/* 2. The Invisible Engine: This catches the click and opens the picker */}
+              {/* Invisible color picker */}
               <input
                 type="color"
                 value={brandHex}
@@ -80,10 +80,8 @@ const BrandSection = ({
         </div>
       </div>
 
-      {/* Use your existing Swatches component here in the parent */}
-      {/* <Swatches shades={brandPalette} /> */}
       <Swatches
-        shades={finalDisplayPalette}
+        palette={finalDisplayPalette}
         onChange={(key, hex) => setOverrides(prev => ({ ...prev, [key]: hex }))}
       />
 
@@ -92,5 +90,3 @@ const BrandSection = ({
 
   )
 }
-
-export default BrandSection;

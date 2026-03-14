@@ -1,4 +1,4 @@
-const presetPalettes = {
+export const presetPalettes = {
   slate: {
     50: "oklch(98.4% 0.003 247.858)",
     100: "oklch(96.8% 0.007 247.896)",
@@ -141,6 +141,3 @@ const presetPalettes = {
     900: "#7f1d1d"
   }
 }
-
-
-export default presetPalettes;

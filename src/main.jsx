@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import PaletteManager from './components/PaletteManager'
+import { PaletteManager } from './components/PaletteManager'
 import './index.css'  // your Tailwind imports
 
 ReactDOM.createRoot(document.getElementById('color-palette-builder')).render(

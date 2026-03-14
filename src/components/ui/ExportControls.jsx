@@ -1,10 +1,10 @@
 import { useState } from "react";
-import stringifyPalette from "../../utils/stringifyPalette";
+import stringifyPalette from "../../utils/stringify-palette";
 
-export default function ExportControls({
+export const ExportControls = ({
   palette,
   defaultPrefix,
-}) {
+}) => {
 
   const [prefix, setPrefix] = useState(defaultPrefix || "--color-primary-");
   const [format, setFormat] = useState("hex");

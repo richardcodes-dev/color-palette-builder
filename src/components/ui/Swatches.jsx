@@ -1,7 +1,7 @@
-export default function Swatches({ shades, onChange }) {
+export const Swatches = ({ palette, onChange }) => {
   return (
     <div className="flex w-full gap-2">
-      {Object.entries(shades).map(([key, value]) => {
+      {Object.entries(palette).map(([key, value]) => {
         const isInteractive = !!onChange;
 
         return (
