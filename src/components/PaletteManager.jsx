@@ -6,12 +6,12 @@ import { BrandSection } from "./sections/BrandSection";
 export const PaletteManager = () => {
 
   const tabs = [
-    { name: "Presets", component: PresetsSection },
-    { name: "Brand", component: BrandSection },
-    { name: "Custom", component: CustomSection }
+    { name: "Presets", render: () => <PresetsSection /> },
+    { name: "Brand", render: () => <BrandSection /> },
+    { name: "Custom", render: () => <CustomSection /> }
   ];
+
   const [activeTab, setActiveTab] = useState("Presets");
-  const ActiveComponent = tabs.find(t => t.name === activeTab)?.component;
 
   return (
     <div className="p-12 space-y-6 bg-white rounded-xl max-w-250 mx-auto">
@@ -31,7 +31,11 @@ export const PaletteManager = () => {
 
         {/* Tab Content */}
         <div>
-          {<ActiveComponent />}
+          {tabs.map((tab) => (
+            <div key={tab.name} className={activeTab === tab.name ? "block" : "hidden"}>
+              {tab.render()}
+            </div>
+          ))}
         </div>
       </div>
     </div>
