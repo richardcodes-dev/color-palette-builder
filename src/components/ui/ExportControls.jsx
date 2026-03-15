@@ -8,10 +8,13 @@ export const ExportControls = ({
 
   const [prefix, setPrefix] = useState(defaultPrefix || "--color-primary-");
   const [format, setFormat] = useState("hex");
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
     const paletteString = stringifyPalette(palette, prefix, format);
     navigator.clipboard.writeText(paletteString);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   const handleReset = () => {
@@ -43,10 +46,11 @@ export const ExportControls = ({
 
       {/* Copy button */}
       <button
-        className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-blue-700 transition-colors"
+        className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-blue-700 transition-colors min-w-25"
         onClick={handleCopy}
+        disabled={isCopied}
       >
-        Copy CSS
+        {isCopied ? "Copied!" : "Copy CSS"}
       </button>
 
       {/* Reset button */}
