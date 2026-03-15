@@ -10,8 +10,8 @@ export const BrandSection = () => {
   const [darkRate, setDarkRate] = useState(1.0);
   const [overrides, setOverrides] = useState({});
 
-  const generatedPalette = generateBrandColorScale(brandHex, lightRate, darkRate);
-  const finalDisplayPalette = { ...generatedPalette, ...overrides };
+  const basePalette = generateBrandColorScale(brandHex, lightRate, darkRate);
+  const palette = { ...basePalette, ...overrides };
 
   const resetPalette = () => {
     setOverrides({});
@@ -81,11 +81,11 @@ export const BrandSection = () => {
       </div>
 
       <Swatches
-        palette={finalDisplayPalette}
+        palette={palette}
         onChange={(key, hex) => setOverrides(prev => ({ ...prev, [key]: hex }))}
       />
 
-      <ExportControls palette={finalDisplayPalette} />
+      <ExportControls palette={palette} />
     </div>
 
   )
