@@ -13,9 +13,25 @@ export const BrandSection = () => {
   const basePalette = generateBrandColorScale(brandHex, lightRate, darkRate);
   const palette = { ...basePalette, ...overrides };
 
-  const resetPalette = () => {
-    setOverrides({});
-  }
+  const resetPalette = (range) => {
+    setOverrides(prev => {
+      const next = { ...prev };
+
+      Object.keys(prev).forEach(key => {
+        const shade = parseInt(key);
+
+        if (
+          (range === "light" && shade <= 500) ||
+          (range === "dark" && shade > 500)
+        ) {
+          delete next[key];
+        }
+      });
+
+      return next;
+    });
+  };
+
 
   return (
 
@@ -34,7 +50,7 @@ export const BrandSection = () => {
               value={lightRate}
               onChange={(e) => {
                 setLightRate(parseFloat(e.target.value));
-                resetPalette();
+                resetPalette('light');
               }}
               className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
@@ -55,7 +71,7 @@ export const BrandSection = () => {
                 value={brandHex}
                 onChange={(e) => {
                   setBrandHex(e.target.value);
-                  resetPalette(); // Clear overrides when brand color changes
+                  resetPalette('dark'); // Clear overrides when brand color changes
                 }}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer scale-150"
               />
@@ -71,7 +87,7 @@ export const BrandSection = () => {
               value={darkRate}
               onChange={(e) => {
                 setDarkRate(parseFloat(e.target.value));
-                resetPalette();
+                resetPalette('dark');
               }}
               className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
