@@ -3,7 +3,7 @@ import { formatHex, formatHsl, formatRgb, formatCss, oklch, rgb, clampRgb } from
 
 
 // PERFECT - PRESERVE AT ALL COSTS!!!!!!!!!
-export function generateCustomColorScale({ l, c, h }) {
+export const generateCustomColorScale = ({ l, c, h }) => {
   const keys = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
   const shades = {};
   const pivot = l;
@@ -107,7 +107,7 @@ export function generateBrandColorScale(brandHex, lRate = 1, dRate = 1, lightSte
 
 
 
-export function stringifyPalette(palette, prefix, format) {
+export const stringifyPalette = (palette, prefix, format) => {
   const cssRows = Object.entries(palette).map(([key, value]) => {
     let formattedValue = value;
 
@@ -133,3 +133,46 @@ export function stringifyPalette(palette, prefix, format) {
   const finalCSS = cssRows.join("\n");
   return finalCSS;
 }
+
+
+
+/**
+ * Generates an SVG string of the palette for vector tool import.
+ * Squares are 100x100 with a 13px gap.
+ */
+export const generateSvg = (palette) => {
+  const swatchSize = 100; // size of each color swatch
+  const gap = 13; // horizontal gap between swatches
+  const textGap = 28; // vertical gap between rect and text
+  const fontSize = 16;
+
+  const shades = Object.keys(palette).sort((a, b) => Number(a) - Number(b)); // shade keys, numerically sorted
+
+  const totalWidth = (shades.length * swatchSize) + ((shades.length - 1) * gap);
+  const totalHeight = swatchSize + textGap + fontSize + 10;
+
+  const svgGroups = shades.map((shade, index) => {
+    const x = index * (swatchSize + gap);
+    const fill = formatHex(palette[shade]) ?? "#000000";
+
+    return `
+    <g>
+      <rect x="${x}" y="0" width="${swatchSize}" height="${swatchSize}" fill="${fill}" />
+      <text 
+        x="${x + swatchSize / 2}" 
+        y="${swatchSize + textGap}" 
+        font-family="ArialMT, Arial, sans-serif" 
+        font-size="${fontSize}" 
+        font-weight="400"
+        text-anchor="middle" 
+        fill="#000000"
+      >
+        ${shade}
+      </text>
+    </g>`;
+  }).join("");
+
+  return `<svg width="${totalWidth}" height="${totalHeight}" viewBox="0 0 ${totalWidth} ${totalHeight}" xmlns="http://www.w3.org/2000/svg">
+${svgGroups}
+</svg>`;
+};

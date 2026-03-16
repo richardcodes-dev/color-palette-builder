@@ -1,5 +1,5 @@
 import { useState } from "react";
-import stringifyPalette from "../../utils/stringify-palette";
+import { generateSvg, stringifyPalette } from "../../utils/palette-utils";
 
 export const ExportControls = ({
   palette,
@@ -20,6 +20,11 @@ export const ExportControls = ({
   const handleReset = () => {
     setPrefix(defaultPrefix || "--color-primary-");
     setFormat("hex");
+  }
+
+  const handleSvgExport = () => {
+    const svgString = generateSvg(palette);
+    navigator.clipboard.writeText(svgString);
   }
 
   return (
@@ -59,6 +64,14 @@ export const ExportControls = ({
         onClick={handleReset}
       >
         Reset
+      </button>
+
+      {/* Figma swatches export */}
+      <button
+        className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-blue-700 transition-colors min-w-25 self-end"
+        onClick={handleSvgExport}
+      >
+        Copy SVG
       </button>
     </div>
   );
